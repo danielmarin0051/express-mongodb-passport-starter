@@ -1,0 +1,18 @@
+GET  http://localhost:5000
+###
+GET http://localhost:5000/login.html
+###
+
+GET http://localhost:5000/auth/login
+###
+
+POST http://localhost:5000/auth/register
+Content-Type: application/json
+
+{
+  "name": "Obi-Wan Kenobi",
+  "email": "obiwan@kenobi",
+  "password": "hello there"
+}
+
+###
