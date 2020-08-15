@@ -1,13 +1,15 @@
 {
-  "name": "penthouse_backend",
+  "name": "express-mongodb-passport-starter",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "restartDB": "node ./databaseData/reloadDB.js",
-    "lint": "./node_modules/.bin/eslint --ignore-path .gitignore ."
+    "reloadDB": "node ./databaseData/reloadDB.js",
+    "lint": "./node_modules/.bin/eslint --ignore-path .gitignore .",
+    "test": "npm run reloadDB && ./node_modules/.bin/mocha",
+    "test:watch": "nodemon --exec ./node_modules/.bin/mocha"
   },
   "keywords": [],
   "author": "",
@@ -22,11 +24,16 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "eslint": "^7.6.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-mocha": "^8.0.0",
+    "mocha": "^8.1.1",
     "nodemon": "^2.0.4",
-    "prettier": "2.0.5"
+    "prettier": "2.0.5",
+    "request": "^2.88.2"
   }
 }

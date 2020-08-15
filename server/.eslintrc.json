@@ -2,14 +2,25 @@
   "env": {
     "browser": true,
     "commonjs": true,
-    "es2020": true
+    "es2020": true,
+    "mocha": true
   },
-  "extends": ["airbnb-base", "prettier"],
+  "plugins": ["mocha"],
+  "extends": ["airbnb-base", "prettier", "plugin:mocha/recommended"],
   "parserOptions": {
     "ecmaVersion": 11
   },
   "rules": {
     "no-console": "off",
     "no-underscore-dangle": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.test.js"],
+      "rules": {
+        "func-names": "off",
+        "no-unused-expressions": "off"
+      }
+    }
+  ]
 }

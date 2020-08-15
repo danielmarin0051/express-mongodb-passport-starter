@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-const Header = ({ authenticated, user, handleAuthChange }) => {
+const Header = ({ user, handleAuthChange }) => {
   const handleLogout = async () => {
     try {
       await axios.get("/api/auth/logout");
@@ -15,22 +15,13 @@ const Header = ({ authenticated, user, handleAuthChange }) => {
   };
   return (
     <div>
-      {authenticated ? (
-        <>
-          <h1>Welcome {user.name}</h1>
-          <button onClick={handleLogout}>Logout</button>
-        </>
-      ) : (
-        <>
-          <h1>Hello, please login or register</h1>
-        </>
-      )}
+      <h1>Welcome {user.name}</h1>
+      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 };
 
 Header.propTypes = {
-  authenticated: PropTypes.bool.isRequired,
   user: PropTypes.shape({
     name: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,

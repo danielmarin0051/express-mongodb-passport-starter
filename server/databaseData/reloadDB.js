@@ -4,19 +4,11 @@ const { mongoURI, bcryptSaltLength } = require("../config/config");
 const User = require("../schemas/User");
 const { users } = require("./initialData");
 
-console.log("Fake users: ", users);
-
-mongoose
-  .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB connected..."))
-  .catch((err) => console.log(err));
-
 const removePromises = [User.deleteMany({})];
 
-async function realoadDatabaseHelper() {
+async function reloadDatabaseHelper() {
   try {
     await Promise.all(removePromises);
-    console.log("All data removed from database");
     await Promise.all(
       users.map(async (user) => {
         const { name, email, password } = user;
@@ -33,17 +25,29 @@ async function realoadDatabaseHelper() {
   }
 }
 
-(async function realoadDatabase() {
+async function reloadDB() {
   try {
-    await realoadDatabaseHelper();
-    console.log("Database sucessfully reloaded, contents: ");
-    const usersInDatabase = await User.find();
-    console.log("users: ", usersInDatabase);
+    console.log("Reloading database");
+    await mongoose.connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    await reloadDatabaseHelper();
+    console.log("Database sucessfully reloaded");
+    // const usersInDatabase = await User.find();
+    // console.log("users: ", usersInDatabase);
   } catch (err) {
     console.log("Error reloading database: ", err);
   }
-  mongoose
-    .disconnect()
-    .then(() => console.log("Disconnected from database"))
-    .catch((err) => console.log("Error disconnecting from database", err));
-})();
+  try {
+    await mongoose.disconnect();
+  } catch (err) {
+    console.log("Error while disconnecting from database:", err);
+  }
+}
+
+if (require.main === module) {
+  reloadDB();
+}
+
+module.exports = reloadDB;

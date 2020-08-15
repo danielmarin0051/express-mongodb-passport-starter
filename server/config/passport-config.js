@@ -13,25 +13,27 @@ async function getUserByEmail(email) {
 }
 
 function initializePassport(passport) {
-  console.log("Initializing passport");
+  // console.log("Initializing passport");
   const authenticateUser = async (email, password, done) => {
-    console.log("Attempting to authenticate user: ", { email, password });
+    // console.log("Attempting to authenticate user: ", { email, password });
     try {
       const user = await getUserByEmail(email);
       if (user === null) {
-        return done(null, false);
+        return done(null, false, { message: "email" });
       }
       if (await bcrypt.compare(password, user.hashedPassword)) {
-        console.log("User with matching credentials found: ", user);
+        // console.log("User with matching credentials found: ", user);
         const clientUser = {
           email: user.email,
           name: user.name,
-          _id: user._id,
+          id: user._id,
         };
         return done(null, clientUser);
       }
-      return done(null, false);
+      // console.log("Wrong password...");
+      return done(null, false, { message: "password" });
     } catch (err) {
+      console.log("Error catched while authenticating user: ", err);
       return done(err);
     }
   };
@@ -43,18 +45,21 @@ function initializePassport(passport) {
     )
   );
   passport.serializeUser((user, done) => {
-    console.log("Serializing of user: ", user);
-    done(null, user._id);
+    // console.log("Serializing of user: ", user);
+    done(null, user.id);
   });
   passport.deserializeUser((id, done) => {
-    console.log("Deserializing of user with id: ", id);
+    // console.log("Deserializing user with id: ", id);
     User.findById(id, (err, user) => {
       if (err) {
         done(err, null);
         return;
       }
+      if (!user) {
+        done(err, null);
+      }
       const { email, name, _id } = user;
-      const clientUser = { email, name, _id };
+      const clientUser = { email, name, id: _id };
       done(err, clientUser);
     });
   });

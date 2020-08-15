@@ -102,8 +102,8 @@ class LoginRegister extends React.Component {
       const newUser = { email, password };
       console.log("Client: attempting to login with user: ", newUser);
       const res = await axios.post("/api/auth/login", newUser);
-      const { authenticated, user } = res.data;
-      this.props.handleAuthChange(authenticated, user);
+      const { isAuthenticated, user } = res.data;
+      this.props.handleAuthChange(isAuthenticated, user);
       console.log("login response: ", res);
     } catch (err) {
       console.log("Error while logging in", err);
@@ -117,8 +117,8 @@ class LoginRegister extends React.Component {
       const newUser = { name, email, password };
       console.log("Client: attempting to register user: ", newUser);
       const res = await axios.post("/api/auth/register", newUser);
-      const { authenticated, user } = res.data;
-      this.props.handleAuthChange(authenticated, user);
+      const { isAuthenticated, user } = res.data;
+      this.props.handleAuthChange(isAuthenticated, user);
       console.log("register response: ", res);
     } catch (err) {
       console.log("Error while registering", err);
